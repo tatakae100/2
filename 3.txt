@@ -1,0 +1,76 @@
+import numpy as np
+
+class Perceptron:
+    
+    def __init__(self, input_size=8, lr=0.1):
+        self.W = np.zeros(input_size + 1)  
+        self.lr = lr
+        
+    def activate(self, x):
+        return 1 if x >= 0 else 0
+        
+    def predict(self, x):
+        x = np.insert(x, 0, 1) 
+        z = self.W.T.dot(x)
+        a = self.activate(z)
+        return a
+    
+    def train(self, X, Y, epochs):
+        for _ in range(epochs):
+            for i in range(Y.shape[0]):
+                x = X[i]
+                y = self.predict(x)
+                e = Y[i] - y
+                self.W = self.W + self.lr * e * np.insert(x, 0, 1)
+
+X = np.array([
+    [0, 1, 0, 0, 0, 0, 0, 0],  
+    [0, 1, 0, 1, 0, 0, 0, 0],  
+    [0, 1, 1, 0, 0, 0, 0, 0],  
+    [0, 1, 1, 1, 0, 0, 0, 0],
+])
+Y = np.array([0, 10, 10, 10])
+
+perceptron = Perceptron()
+perceptron.train(X, Y, epochs=100)
+
+test_X = np.array([
+    [0, 1, 0, 0, 0, 0, 0, 0],  
+    [0, 1, 0, 1, 0, 0, 0, 0],  
+    [0, 1, 1, 0, 0, 0, 0, 0],  
+    [0, 1, 1, 1, 0, 0, 0, 0],
+])
+for i in range(test_X.shape[0]):
+    x = test_X[i]
+    y = perceptron.predict(x)
+    print(f"{x} is {'even' if y == 0 else 'odd'}")
+
+
+
+
+'''
+Perceptron Class Definition: The Perceptron class is defined, which represents a simple perceptron neural network.
+
+It has three main methods:
+__init__: This is the constructor method that initializes the perceptron with the given input size and learning rate. The weights (self.W) are initialized as an array of zeros with a length of input_size + 1 to include the bias term.
+
+activate: This method defines the activation function. It returns 1 if the input is greater than or equal to 0, otherwise, it returns 0.
+
+predict: This method takes an input x, inserts a bias term at the beginning, computes the weighted sum of inputs and weights, passes it through the activation function, and returns the predicted output.
+
+train: This method trains the perceptron using the given input-output pairs (X and Y) for a certain number of epochs. It iteratively updates the weights based on the prediction error.
+
+Training Data Preparation:
+The training input data X consists of binary representations of numbers. Each row in X represents a binary number.
+The corresponding labels Y indicate whether the number represented by each row in X is even or odd. 0 represents even, and 10 represents odd. This is a bit unconventional; usually, we'd use 0 for even and 1 for odd.
+
+Perceptron Initialization and Training:
+An instance of the Perceptron class is created.
+The train method of the Perceptron instance is called with the training data X and Y, and the number of epochs to train for (100 in this case).
+
+Testing:
+Test data test_X is prepared, similar to the training data.
+For each row in the test data, the predict method of the perceptron is called to make predictions.
+The predictions are printed along with the input, indicating whether each number is predicted to be even or odd.
+
+'''

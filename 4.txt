@@ -1,0 +1,63 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+
+iris = load_iris()
+X = iris.data[:, :2]
+y = iris.target
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+weights = np.array([[0.5, -0.5]])
+bias = np.array([0.1]) 
+
+x_min, x_max = X_scaled[:, 0].min() - 1, X_scaled[:, 0].max() + 1
+y_min, y_max = X_scaled[:, 1].min() - 1, X_scaled[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
+
+Z = np.dot(np.c_[xx.ravel(), yy.ravel()], weights.T) + bias
+Z = np.where(Z >= 0, 1, 0)
+Z = Z.reshape(xx.shape)
+
+plt.contourf(xx, yy, Z, alpha=0.4)
+plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=y, marker='o', edgecolor='k')
+plt.title('Perceptron Decision Regions (Iris Dataset)')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.show()
+
+
+'''
+Importing Libraries:
+We import necessary libraries such as NumPy for numerical operations and matplotlib.pyplot for plotting.
+Loading the Iris Dataset: We load the Iris dataset using load_iris() from scikit-learn.
+
+We select only the first two features of the dataset for visualization purposes (sepel length and sepel width).
+
+Standardizing Features: We standardize the features using StandardScaler() to ensure that each feature has a mean of 0 and a standard deviation of 1.
+
+Defining Perceptron Parameters:
+We manually define the parameters of the perceptron, specifically the initial weights and bias.
+The weights variable contains the initial weights of the perceptron.
+The bias variable contains the initial bias of the perceptron.
+
+Computing Decision Boundary:
+We compute the decision boundary based on the initial weights and bias of the perceptron.
+We create a grid of points (xx, yy) covering the feature space using np.meshgrid().
+
+For each point in the grid, we compute the output of the perceptron using the dot product of the point's coordinates and the weights, plus the bias.
+We classify each point based on whether its output is greater than or equal to 0, assigning it to class 1 or class 0 accordingly.
+Finally, we reshape the classification results to match the shape of the grid.
+
+xx.ravel() and yy.ravel() are used to flatten the meshgrid arrays xx and yy into 1D arrays before concatenating them using np.c_[].
+
+Plotting Decision Boundary and Data Points:
+We use plt.contourf() to create filled contour plots representing the decision regions.
+We use plt.scatter() to plot the data points.
+We set the title, xlabel, and ylabel for the plot using plt.title(), plt.xlabel(), and plt.ylabel() respectively.
+Displaying the Plot:
+We use plt.show() to display the plot
+
+'''

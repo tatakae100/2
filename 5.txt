@@ -1,0 +1,54 @@
+#Write a python program for bidirectional associative memory with two pairs of vectors
+
+import numpy as np
+
+# define two pairs of vectors 
+x1 = np.array([1, 1, 1, -1])
+y1 = np.array([1, -1])
+x2 = np.array([-1, -1, 1, 1]) 
+y2 = np.array([-1, 1])
+
+# compute weight matrix W
+W = np.outer(y1, x1) + np.outer(y2, x2)
+
+# define BAM function 
+def bam(x):
+    y = W @ x
+    return np.where(y>=0, 1, -1)
+
+# test BAM with inputs
+x_test = np.array([1, -1, -1, -1]) 
+y_test = bam(x_test)
+
+# print output 
+print("Input x: ", x_test) 
+print("Output y: ", y_test)
+
+
+
+
+'''
+This code demonstrates how to implement a simple Bidirectional Associative Memory network and use it to compute outputs for given input vectors. 
+In BAM, the input vectors are associated with specific output vectors through the weight matrix, and when presented with an input, the network retrieves the associated output.
+
+Import NumPy: The code begins by importing the NumPy library for numerical computations.
+
+Define two pairs of vectors:
+x1 and y1: These are the first pair of input and output vectors.
+x2 and y2: These are the second pair of input and output vectors.
+
+Compute the weight matrix W:
+The weight matrix W is computed by taking the outer product of each output vector (y1, y2) with its corresponding input vector (x1, x2), and then summing these outer products.
+
+Define the BAM function:
+The bam function takes an input vector x and computes the output vector y by multiplying the input vector x with the weight matrix W.
+The np.where function is used to threshold the output values of y. If a value in y is greater than or equal to zero, it is set to 1; otherwise, it is set to -1.
+
+Test BAM with input:
+An input vector x_test is defined for testing the BAM network.
+The BAM function is called with x_test as input, and the output vector y_test is computed.
+
+Print the output:
+The input vector x_test and the output vector y_test are printed to the console.
+
+'''

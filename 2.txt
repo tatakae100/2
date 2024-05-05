@@ -1,0 +1,51 @@
+import numpy as np
+
+# Function to calculate the output of a McCulloch-Pitts neuron
+def mp_neuron(inputs, weights, threshold):
+    weighted_sum = np.dot(inputs, weights)
+    output = 1 if weighted_sum >= threshold else 0
+    return output
+
+# Function to implement ANDNOT logic using McCulloch-Pitts neuron
+def and_not(x1, x2):
+    weights = [1, -1]  # Weights for ANDNOT function
+    threshold = 1     # Threshold for ANDNOT function
+    inputs = np.array([x1, x2])
+    output = mp_neuron(inputs, weights, threshold)
+    return output
+
+# Testing the ANDNOT function
+print(and_not(2, 1))  # Expected output: 0
+print(and_not(1, 0))  # Expected output: 1
+print(and_not(1, 1))  # Expected output: 0
+print(and_not(0, 1))  # Expected output: 0
+
+
+'''
+import numpy as np
+
+# function of checking threshold value 
+def linear_threshold_gate(dot, T):
+    if dot >= T:
+        return 1 
+    else:
+        return 0
+
+# matrix of inputs 
+input_table = np.array([
+    [0,0], # both no
+    [2,1], # one no, one yes 
+    [1,0], # one yes, one no 
+    [1,1]  # both yes
+])
+weights = np.array([1,-1])
+T = 1
+
+dot_products_sum = input_table @ weights
+
+print(f'input table:\n{input_table}') 
+print(f'dot products:\n{dot_products_sum}')
+for i in range(0,4):
+    activation = linear_threshold_gate(dot_products_sum[i], T) 
+    print(f'Activation: {activation}')
+'''

@@ -1,0 +1,68 @@
+import tensorflow as tf
+from keras.datasets import mnist 
+from keras.models import Sequential
+from keras.layers import Dense, Flatten 
+
+# Load and preprocess the MNIST dataset
+(X_train, y_train), (X_test, y_test) = mnist.load_data() 
+
+
+
+
+X_train = X_train / 255.0  
+X_test = X_test / 255.0
+
+
+
+
+model = Sequential([Flatten(input_shape=(28, 28)), Dense(128, activation='relu'), Dense(10, activation='softmax')])
+
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',metrics=['accuracy'])
+
+model.fit(X_train, y_train, epochs=10, batch_size=64 )
+
+loss, accuracy = model.evaluate(X_test, y_test) 
+
+
+
+
+
+print(f"Test Loss: {loss}")
+print(f"Test Accuracy: {accuracy}")
+
+
+
+
+
+'''
+Import necessary libraries:
+TensorFlow: for building and training the neural network.
+Keras functions from TensorFlow: for building the neural network model.
+MNIST dataset from Keras: for loading the handwritten digit dataset.
+    
+Load the MNIST dataset using mnist.load_data() function from the Keras datasets module. The dataset contains 60,000 training images and 10,000 testing images of handwritten digits (0 through 9).
+
+Preprocess the data by scaling the pixel values to a range between 0 and 1. This is done by dividing the pixel values by 255.0.
+
+Build a simple neural network model using Keras Sequential API. The model consists of:
+A Flatten layer: to flatten the 2D input images into a 1D array.
+Two Dense layers:
+The first Dense layer with 128 neurons and ReLU activation function.
+The second Dense layer with 10 neurons (output layer) and softmax activation function, suitable for multi-class classification tasks.
+
+Compile the model using compile() method. Specify optimizer, loss function, and evaluation metrics. In this case:
+Optimizer: Adam optimizer.
+Loss function: Sparse categorical cross-entropy, suitable for multi-class classification tasks where the labels are integers.
+Evaluation metric: Accuracy.
+    
+Train the model on the training data using fit() method. Specify the training data, labels, number of epochs (iterations over the entire training dataset), and batch size.
+
+Evaluate the trained model on the test data using evaluate() method. This returns the loss value and evaluation metric value (accuracy) on the test set.
+
+Print the test loss and accuracy.
+
+This program trains a neural network model to classify handwritten digits from the MNIST dataset using TensorFlow/Keras and evaluates its performance using test data.
+
+'''
+
+

@@ -1,0 +1,44 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+arr = np.linspace(-5, 5, 100)
+
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+    
+plt.figure(figsize=(8, 6))  
+plt.plot(arr, sigmoid(arr), label='Sigmoid', color='blue')  
+
+def linear(x, weight, bias):
+    return weight * x + bias
+
+weight = 5  
+bias = 3  
+plt.plot(arr, linear(arr, weight, bias), label='Linear', color='red')  # Plot linear function with red color and label
+
+
+def relu(x):
+    return np.maximum(0, x)
+
+plt.plot(arr, relu(arr), label='ReLU', color='green')  # Plot ReLU function with green color and label
+
+def tanh(x):
+    return np.tanh(x)
+
+plt.plot(arr, tanh(arr), label='tanh', color='orange')  # Plot tanh function with orange color and label
+
+
+def softmax(x):
+    exp_x = np.exp(x - np.max(x))
+    return exp_x / np.sum(exp_x)
+
+plt.plot(arr, softmax(arr), label='Softmax', color='purple')  # Plot softmax function with purple color and label
+
+# Add labels and legend
+plt.xlabel('x')  # Label x-axis
+plt.ylabel('Activation')  # Label y-axis
+plt.title('Activation Functions')  # Set plot title
+plt.legend()  # Add legend to differentiate between plotted functions
+plt.grid(True)  # Add grid to the plot
+plt.show()  # Display the plot

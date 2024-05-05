@@ -1,0 +1,67 @@
+import numpy as np 
+class HopfieldNetwork:
+    def __init__(self, n_neurons): 
+        self.weights = np.zeros((n_neurons, n_neurons))
+
+    def train(self, patterns):
+        for pattern in patterns:
+            self.weights += np.outer(pattern, pattern) 
+            np.fill_diagonal(self.weights, 0)
+
+    def predict(self, pattern):
+        energy = -0.5 * ((pattern @ self.weights) @ pattern) 
+        return np.sign((pattern @ self.weights) + energy)
+
+
+patterns = np.array([
+                [1, 1, -1, -1],
+                [-1, -1, 1, 1],
+                [1, -1, 1, -1],
+                [-1, 1, -1, 1]
+                ])
+n_neurons = 4
+
+network = HopfieldNetwork(n_neurons) 
+
+network.train(patterns)
+
+for pattern in patterns:
+    prediction = network.predict(pattern) 
+    print('Input pattern:', pattern) 
+    print('Predicted pattern:', prediction)
+
+
+
+'''
+HopfieldNetwork Class:
+The HopfieldNetwork class represents the Hopfield network.
+It has an initializer __init__ which takes the number of neurons (n_neurons) in the network as input and initializes the weights matrix with zeros.
+The weights matrix (self.weights) stores the connection weights between neurons.
+
+Training (train method):
+The train method takes a set of binary patterns as input and adjusts the weights matrix accordingly.
+It iterates over each pattern in the input set.
+For each pattern, it computes the outer product of the pattern with itself using np.outer, which gives a matrix representing the connections between neurons.
+It then adds this outer product matrix to the weights matrix (self.weights), effectively updating the weights based on the input pattern.
+After updating the weights, it fills the diagonal of the weights matrix with zeros to ensure that neurons do not have self-connections.
+
+Prediction (predict method):
+The predict method takes a single binary pattern as input and returns the predicted (reconstructed) pattern.
+It calculates the energy of the input pattern using the energy function for Hopfield networks: 
+−0.5∗pattern∗weights∗pattern.
+Then, it computes the dot product of the input pattern with the weights matrix (pattern @ self.weights).
+Finally, it adds the energy to the dot product and applies the sign function element-wise to get the predicted pattern.
+
+Patterns and Network Initialization:
+The program defines a set of binary patterns (patterns) that the network will be trained on.
+It also specifies the number of neurons (n_neurons) in the network.
+An instance of the HopfieldNetwork class is created with the specified number of neurons.
+
+Training and Prediction:
+The program trains the network with the provided patterns using the train method.
+Then, it iterates over each pattern in the input set and predicts the pattern using the predict method.
+The input pattern and the predicted pattern are printed for each iteration.
+
+This program demonstrates how a Hopfield network can be trained to store binary patterns and then recall similar patterns when presented with noisy or incomplete input.
+
+'''

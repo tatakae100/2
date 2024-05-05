@@ -1,0 +1,76 @@
+import tensorflow as tf 
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense, Flatten
+from sklearn.model_selection import train_test_split 
+from sklearn.preprocessing import StandardScaler 
+from sklearn.datasets import load_breast_cancer 
+
+df=load_breast_cancer()
+
+
+
+X_train,X_test,y_train,y_test=train_test_split(df.data,df.target,test_size=0.20,random_state=42) 
+
+sc=StandardScaler()
+X_train=sc.fit_transform(X_train)
+X_test=sc.transform(X_test)
+
+
+
+
+model=Sequential([Flatten(input_shape=(X_train.shape[1],)),Dense(1,activation='sigmoid')]) 
+
+model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
+
+model.fit(X_train,y_train,epochs=5) 
+
+test_loss,test_accuracy = model.evaluate(X_test,y_test) 
+
+
+
+print("Test Loss: ",test_loss)
+print("accuracy is",test_accuracy)
+
+
+
+
+'''
+Import necessary libraries:
+TensorFlow: for building and training the neural network.
+NumPy: for numerical computations.
+Keras functions from TensorFlow: for building the neural network model.
+StandardScaler: for scaling the input features.
+load_breast_cancer: for loading the breast cancer dataset.
+train_test_split: for splitting the dataset into training and testing sets.
+
+Load the breast cancer dataset using load_breast_cancer() function from sklearn.datasets module. This dataset contains features of breast cancer tumors and their corresponding labels (0: malignant, 1: benign).
+python
+
+Split the dataset into training and testing sets using train_test_split() function from sklearn.model_selection module. The data is split into 80% training and 20% testing sets.
+python
+
+Scale the features using StandardScaler() from sklearn.preprocessing module. This is done to standardize the feature values to have a mean of 0 and a standard deviation of 1.
+python
+
+Build a simple neural network model using Keras Sequential API. The model consists of:
+A Flatten layer: to flatten the input data into a 1D array.
+A Dense layer: with 1 neuron and sigmoid activation function, which is suitable for binary classification tasks.
+
+Compile the model using compile() method. Specify optimizer, loss function, and evaluation metrics. In this case:
+Optimizer: Adam optimizer.
+Loss function: Binary cross-entropy, suitable for binary classification tasks.
+Evaluation metric: Accuracy.
+
+Train the model on the training data using fit() method. Specify the training data, labels, and number of epochs (iterations over the entire training dataset).
+python
+
+Evaluate the trained model on the test data using evaluate() method. This returns the loss value and evaluation metric value (accuracy in this case) on the test set.
+python
+
+Print the test loss and accuracy.
+
+This program essentially trains a simple neural network model on the breast cancer dataset using TensorFlow/Keras and evaluates its performance using test data.
+'''
+
+
